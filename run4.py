@@ -42,7 +42,7 @@ def main():
     print("Train data shape:", train_input.shape, train_label.shape)
     print("Valid data shape:", valid_input.shape, valid_label.shape)
 
-    ResultDir = "result/subject_%s_Run4_2/" % (to)
+    ResultDir = "result/subject_%s_Run4_3/" % (to)
     if not os.path.exists(ResultDir):
         os.mkdir(ResultDir)
     save_label(dewindowing(valid_label, WINDOW_SIZE), ResultDir)
