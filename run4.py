@@ -179,42 +179,31 @@ def changeaxis(input):
 #get mean, std and normalization
 def newnormalization(input):
     print("new normalize start!!!")
-    #meanstdli = []
     normalized_data = []
     for i in range(len(input)):
         x = []
         y = []
         z = []
-        c = []
-        addr = 0
-        while addr!=164:
-            x.append(input[i][0][addr])
-            y.append(input[i][0][addr+1])
-            z.append(input[i][0][addr+2])
-            c.append(input[i][0][addr+3]) 
-            addr+=4
+        for j in range(17):
+            x.append(input[i][0][j][0])
+            y.append(input[i][0][j][1])
+            z.append(input[i][0][j][2])
         x_mean, x_std = extract_stat(x)
         y_mean, y_std = extract_stat(y)
         z_mean, z_std = extract_stat(z)
-        c_mean, c_std = extract_stat(c)
-        #meanstdli.append([[x_mean, x_std], [y_mean, y_std], [z_mean, z_std], [c_mean, c_std]])
+
         saveli1 = []
-        for j in range(len(input[0])):
+        for j in range(32):
             addr = 0
             saveli2 =[]
             while addr!=164:
                 saveli2.append((input[i][j][addr]-x_mean)/x_std + 1e-13)
                 saveli2.append((input[i][j][addr+1]-y_mean)/y_std + 1e-13)
                 saveli2.append((input[i][j][addr+2]-z_mean)/z_std + 1e-13)
-                saveli2.append((input[i][j][addr+3]-c_mean)/c_std + 1e-13)
                 addr+=4
             saveli1.append(saveli2)
         normalized_data.append(saveli1)
 
-
-
-    #meanstdli : (104545,4,2) in train_input, (2720, 4, 2) in valid_input
-    #return meanstdli,normalized_data
     print("new normalize end!!!") 
     return normalized_data 
 

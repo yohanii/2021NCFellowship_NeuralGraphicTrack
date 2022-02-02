@@ -193,9 +193,9 @@ class Robust(nn.Module):
         x = self.dense1(x)
         #print("x1 : ",x.shape)
 
-        for n in range(5):
-            save = self.relu(x)
-            x = save
+        for _ in range(5):
+            save = x
+            x = self.relu(x)
             x = self.dense2(x)
             x += save
             #print("x : ",x.shape, " n : ", n)
