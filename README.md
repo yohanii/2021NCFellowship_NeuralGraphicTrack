@@ -1033,6 +1033,18 @@ local_train_input, local_valid_input 상대좌표들 스케일링 제대로 함.
 
 **Run7_9**
 
+```
+00001 | Train Loss: 263.7445740 | Valid Loss: 6.0640024 | lr: 0.0009900 | time: 79.339 
+
+00001 | Train Loss: 0.3434798 | Valid Loss: 0.0953266 | lr: 0.0009900 | time: 79.339
+
+00101 | Train Loss: 0.0908280 | Valid Loss: 0.5877220 | lr: 0.0003624 | time: 79.014 
+
+00101 | Train Loss: 0.0228119 | Valid Loss: 0.0635881 | lr: 0.0003624 | time: 79.014
+```
+
+**Score| Distance: 1.0576, Smoothness: 0.0946**
+
 노이즈 제거 사용
 
 쿼터니안 쓴 버전
@@ -1041,6 +1053,127 @@ local_train_input, local_valid_input 상대좌표들 스케일링 제대로 함.
 
 
 
-Loss에 가중치 더해주고 해보기
+**Run7_10**
 
-Root pos 구하는 데이터에도 스케일링 제대로 해보기 
+```
+00001 | Train Loss: 336.2034712 | Valid Loss: 8.2243295 | lr: 0.0009900 | time: 81.467 
+
+00001 | Train Loss: 0.2513252 | Valid Loss: 0.1181954 | lr: 0.0009900 | time: 81.467
+
+00050 | Train Loss: 0.1544391 | Valid Loss: 0.6125563 | lr: 0.0006050 | time: 82.039
+
+00050 | Train Loss: 0.0264181 | Valid Loss: 0.0838474 | lr: 0.0006050 | time: 82.039
+
+00101 | Train Loss: 0.0893316 | Valid Loss: 0.6411726 | lr: 0.0003624 | time: 82.549 
+
+00101 | Train Loss: 0.0201787 | Valid Loss: 0.0827826 | lr: 0.0003624 | time: 82.549
+```
+
+**Score| Distance: 1.0936, Smoothness: 0.0578 50** 4 1
+
+**Score| Distance: 1.1204, Smoothness: 0.0580 60** 6 2
+
+**Score| Distance: 1.0734, Smoothness: 0.0588 70** 2 4
+
+**Score| Distance: 1.1177, Smoothness: 0.0587 80** 5 3
+
+**Score| Distance: 1.0789, Smoothness: 0.0593 90** 3 5
+
+**Score| Distance: 1.0669, Smoothness: 0.0606 100**  1 6
+
+쿼터니안 안 쓴 버전
+
+dis15이상으로 바꿈.
+
+body 축 바뀐거임. -> 안 바꾼것도 확인하기
+
+
+
+**Run7_11**
+
+쿼터니안 쓴 버전
+
+잘 안나와서 다시 돌림.
+
+
+
+**Run7_12**
+
+```
+00001 | Train Loss: 333.2371321 | Valid Loss: 8.0120099 | lr: 0.0009900 | time: 80.510 
+
+00001 | Train Loss: 0.3110186 | Valid Loss: 0.1046518 | lr: 0.0009900 | time: 80.510
+
+00040 | Train Loss: 0.1915162 | Valid Loss: 0.7987636 | lr: 0.0006690 | time: 80.348 
+
+00040 | Train Loss: 0.0301801 | Valid Loss: 0.0546428 | lr: 0.0006690 | time: 80.348
+```
+
+**Score| Distance: 1.3431, Smoothness: 0.0769**
+
+
+
+쿼터니안은 그냥 쓰지말자
+
+
+
+
+
+노이즈제거 안한거 다시 돌려보기
+
+util 드라이브에 올리고 다시 임포트해주고 모델 저장해주기
+
+**Run7_13**
+
+이걸로 확정 짓기로함.
+
+노이즈 제거 안함.
+
+body_train_input 축 바꿈.
+
+local_train_input은 축 안바꿈.
+
+**Score| Distance: 1.0222, Smoothness: 0.0546 (00040)**
+
+
+
+
+
+
+
+**Run 8_2**
+
+```
+00001 | Train Loss: 289.7115807 | Valid Loss: 8.9981996 | lr: 0.0009900 | time: 81.009 00001 | Train Loss: 0.2471290 | Valid Loss: 0.1170308 | lr: 0.0009900 | time: 81.009
+
+ 00040 | Train Loss: 0.1664136 | Valid Loss: 0.6282454 | lr: 0.0006690 | time: 80.214 00040 | Train Loss: 0.0287338 | Valid Loss: 0.0775517 | lr: 0.0006690 | time: 80.214
+
+00050 | Train Loss: 0.1396237 | Valid Loss: 0.6765784 | lr: 0.0006050 | time: 80.061 00050 | Train Loss: 0.0263754 | Valid Loss: 0.0784829 | lr: 0.0006050 | time: 80.061
+
+00060 | Train Loss: 0.1267658 | Valid Loss: 0.5618471 | lr: 0.0005472 | time: 80.148 
+00060 | Train Loss: 0.0246555 | Valid Loss: 0.0806651 | lr: 0.0005472 | time: 80.148
+
+00070 | Train Loss: 0.1111486 | Valid Loss: 0.6559004 | lr: 0.0004948 | time: 80.165 00070 | Train Loss: 0.0231788 | Valid Loss: 0.0784566 | lr: 0.0004948 | time: 80.165
+
+ 00080 | Train Loss: 0.0979855 | Valid Loss: 0.5778535 | lr: 0.0004475 | time: 80.240 00080 | Train Loss: 0.0220364 | Valid Loss: 0.0777869 | lr: 0.0004475 | time: 80.240
+
+00090 | Train Loss: 0.0863998 | Valid Loss: 0.6388185 | lr: 0.0004047 | time: 80.242 00090 | Train Loss: 0.0210768 | Valid Loss: 0.0782454 | lr: 0.0004047 | time: 80.242
+
+00100 | Train Loss: 0.0767665 | Valid Loss: 0.5798288 | lr: 0.0003660 | time: 80.277 00100 | Train Loss: 0.0203310 | Valid Loss: 0.0784084 | lr: 0.0003660 | time: 80.277
+```
+
+Score| Distance: 1.0877, Smoothness: 0.0530 (40)
+
+**Score| Distance: 0.9967, Smoothness: 0.0535 (60)** Best -> Final 제출
+
+Score| Distance: 1.0062, Smoothness: 0.0539 (80)
+
+Score| Distance: 1.0100, Smoothness: 0.0543 (100)
+
+
+
+**Run8_3**
+
+Score| Distance: 1.3927, Smoothness: 0.0580 (90)
+
+Score| Distance: 1.4551, Smoothness: 0.0590 (100)

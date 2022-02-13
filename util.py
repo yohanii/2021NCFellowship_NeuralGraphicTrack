@@ -119,8 +119,13 @@ def denormalization(data, mean, std):
     return data
 
 
-def save_model(model, step, dir):
-    fname = "{:06d}_model.pt"
+def save_model1(model, step, dir):
+    fname = "{:06d}_model1.pt"
+    torch.save(model.state_dict(), dir + fname.format(step))
+    print("Model saved.")
+
+def save_model2(model, step, dir):
+    fname = "{:06d}_model2.pt"
     torch.save(model.state_dict(), dir + fname.format(step))
     print("Model saved.")
 
@@ -138,6 +143,7 @@ def save_label(data, dir):
     np.save(dir + fname, data)
 
 
+
 def check_device():
     print("### Device Check list ###")
     print("GPU available?:", torch.cuda.is_available())
@@ -147,3 +153,164 @@ def check_device():
     print("Device count?:", torch.cuda.device_count())
     print("Device name?:", torch.cuda.get_device_name(device_number))
     print("### ### ### ### ### ###\n\n")
+
+
+#train_input : x,y,z,c 중 c 버리기
+def erasec(input):
+    new_train_input = []
+    for i in range(len(input)):
+        li32 = []
+        for j in range(32):
+            li41 = []
+            for k in range(41):
+                li41.append([input[i][j][k*4],input[i][j][k*4+1], input[i][j][k*4+2]])
+            li32.append(li41)
+        #print(i)
+        new_train_input.append(li32)
+    return new_train_input
+
+#new_train_input(104545, 32, 41, 3)을 selected_train_input(104545, 32, 17, 3)으로 변환
+def select(input):
+    selected_train_input = []
+    for i in range(len(input)):
+        slist2 = []
+        for j in range(32):
+            slist = []
+            slist.append((input[i][j][22] + input[i][j][25])/2) #0
+            slist.append((input[i][j][3] + input[i][j][6])/2) #1
+            slist.append((input[i][j][0] + input[i][j][1])/2) #2
+            slist.append(input[i][j][33]) #3
+            slist.append(input[i][j][38]) #4
+            slist.append(input[i][j][37]) #5
+            slist.append(input[i][j][14]) #6
+            slist.append(input[i][j][19]) #7
+            slist.append(input[i][j][18]) #8
+            slist.append((input[i][j][39] + input[i][j][40])/2) #9
+            slist.append((input[i][j][9] + input[i][j][28]+input[i][j][4] + input[i][j][23])/4) #10
+            slist.append((input[i][j][30] + input[i][j][32])/2) #11
+            slist.append(input[i][j][29]) #12
+            slist.append(input[i][j][35]) #13
+            slist.append((input[i][j][11] + input[i][j][13])/2) #14
+            slist.append(input[i][j][10]) #15
+            slist.append(input[i][j][16]) #16
+            slist2.append(slist)
+        selected_train_input.append(slist2)
+        #print(i)
+    return selected_train_input
+
+def local(input, root):
+    #상대좌표로 바꾸기 selected_train_input을
+    local_train_input = np.empty((0,32,17,3))
+    for i in range(len(input)):
+        saveli = np.empty((0,17,3))
+        for j in range(32):
+            saveli = np.append(saveli, [input[i][j] - root[i][j]], axis = 0)
+        #print("saveli : ",saveli.shape)
+        local_train_input = np.append(local_train_input, [saveli], axis =0)
+        #print(i)
+    #print(local_train_input.shape)
+    return local_train_input
+
+#root 추출
+def getroot(input):
+    root = []
+    for t in range(len(input)):
+        semi = []
+        for i in range(32):
+            x = []
+            y = []
+            z = []
+            x.append(input[t][i][9*4])
+            y.append(input[t][i][9*4+1])
+            z.append(input[t][i][9*4+2])
+            x.append(input[t][i][28*4])
+            y.append(input[t][i][28*4+1])
+            z.append(input[t][i][28*4+2])
+            x.append(input[t][i][39*4])
+            y.append(input[t][i][39*4+1])
+            z.append(input[t][i][39*4+2])
+            x.append(input[t][i][4*4])
+            y.append(input[t][i][4*4+1])
+            z.append(input[t][i][4*4+2])
+            x.append(input[t][i][23*4])
+            y.append(input[t][i][23*4+1])
+            z.append(input[t][i][23*4+2])
+            x.append(input[t][i][40*4])
+            y.append(input[t][i][40*4+1])
+            z.append(input[t][i][40*4+2])
+            semi.append([sum(x)/6, sum(y)/6, sum(z)/6])
+        root.append(semi)
+    return root
+
+#train_input 스케일링2 키로 z방향이 키일 경우
+def scaling(input):
+    for i in range(len(input)):
+        z = []
+        for k in range(17):
+            z.append(input[i][0][k][2])
+        leng = max(z) - min(z)
+        #print(i)
+        #print(leng)
+        input[i] = input[i]/(leng/22)
+    print(input.shape)
+
+
+#new_train_input(104545, 32, 41, 3)을 body_train_input(104545, 32, 6, 3)으로 변환
+def getbody(input):
+    body_train_input = []
+    for i in range(len(input)):
+        slist2 = []
+        for j in range(32):
+            slist = []
+            slist.append(input[i][j][9]) #0
+            slist.append(input[i][j][28]) #1
+            slist.append(input[i][j][39]) #2
+            slist.append(input[i][j][40]) #3
+            slist.append(input[i][j][4]) #4
+            slist.append(input[i][j][23]) #5  
+            slist2.append(slist)
+        body_train_input.append(slist2)
+        #print(i)
+    return body_train_input
+
+
+#label1 분리
+def getlabel1(input):
+    label1 = np.empty((len(input), 32, 3))
+    for i in range(len(input)):
+        for j in range(32):
+                for k in range(3):
+                    label1[i][j][k] = input[i][j][k]
+    return label1
+
+#label2 분리
+def getlabel2(input):
+    label2 = np.empty((len(input), 32, 279))
+    for i in range(len(input)):
+        for j in range(32):
+                for k in range(3, 282):
+                    label2[i][j][k-3] = input[i][j][k]
+    return label2
+
+def loss_fn1(input, target):
+  result1 = (abs(input-target)).sum()/input.data.nelement()
+  #result2 = ((input-target)**2).sum()/input.data.nelement()
+  #result = result1 + result2 * 0.01
+  result = result1
+  return result
+
+def loss_fn2(input, target):
+  result1 = (abs(input-target)).sum()/input.data.nelement()
+  result = result1
+  return result
+
+
+# x, y, z -> y,z,x body_train_input
+def changeaxis(input):
+    for i in range(len(input)):
+        for j in range(32):
+                for k in range(6):
+                    save = input[i][j][k][0]
+                    input[i][j][k][0] = input[i][j][k][1]
+                    input[i][j][k][1] = input[i][j][k][2]
+                    input[i][j][k][2] = save
