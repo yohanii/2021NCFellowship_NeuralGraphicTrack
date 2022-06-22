@@ -278,13 +278,13 @@ Adam -> AdamW의 amsgrad 알고리즘 사용
 
 Run4는 valid loss 전혀 줄어들지 않는 모습.
 
-![img](file:///C:/Users/Yohan/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)
+![image](https://user-images.githubusercontent.com/33834623/174992775-48d8a517-001a-4753-850a-0e81ead79d4b.png)
 
-![img](file:///C:/Users/Yohan/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+![image](https://user-images.githubusercontent.com/33834623/174992818-85e8a66c-9f35-427a-8a1f-e06b2f3d82f1.png)
 
  
 
-![img](file:///C:/Users/Yohan/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)
+![image](https://user-images.githubusercontent.com/33834623/174992833-02ed1b79-5c92-4b49-ad9d-327f55f4bb2d.png)
 
 
 
@@ -302,8 +302,8 @@ Run4는 valid loss 전혀 줄어들지 않는 모습.
 
 이후 41개의 마커 위치 파악함.
 
-<img src="C:\Users\Yohan\Documents\카카오톡 받은 파일\KakaoTalk_20220126_210805398.jpg" style="zoom:50%;" />
 
+![KakaoTalk_20220126_210805398](https://user-images.githubusercontent.com/33834623/174993122-c07aea52-d662-46cd-a0de-658c5d1089b4.jpg)
 
 
 ##### 해야할 일들
@@ -464,6 +464,7 @@ Root pos만 스케일링 잘 하면 많이 안정화 될 듯 보임.
  
 
 Y[index]값이 1000을 넘냐 안 넘냐로 나눠서 따로 스케일링 해주자.
+![image](https://user-images.githubusercontent.com/33834623/175029058-e26f648c-5417-4627-b35b-73a1e8d9e3f8.png)
 
  
 
